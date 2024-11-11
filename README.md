@@ -1,6 +1,3 @@
-# SCP
-Smart connected products class project - Group 4
-
 # Smart Alarm Clock Splash Application
 
 This project is a smart alarm clock application designed to interact with an ESP32 microcontroller to create an IoT-enabled device. The microcontroller is connected to The Things Network (TTN) via LoRaWAN and allows users to configure settings for a unique alarm feature: a water-splash mechanism that activates if the alarm is not turned off. The application includes a web interface where users can set alarm time, adjust the water pump power, and monitor the water level.
