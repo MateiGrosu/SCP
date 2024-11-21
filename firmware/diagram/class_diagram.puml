@@ -1,0 +1,79 @@
+@startuml
+
+class BuzzerActuator {
+
+    - volume: unsigned char
+
+    + BuzzerActuator()
+    + enable()
+    + disable()
+}
+
+class BuzzerSensor {
+
+    + BuzzerSensor()
+    + isPressed(): boolean
+}
+
+class PumpActuator {
+
+    + PumpActuator()
+    + startDispense()
+    + stopDispense()
+}
+
+class Pump {
+
+    + Pump()
+    + startDispense()
+    + stopDispense()
+}
+
+class WaterLevelSensor {
+    + WaterLevelSensor()
+    + getWaterLevel(): unsigned char
+}
+
+class RoomTemperatureSensor {
+    + RoomTemperatureSensor()
+    + getCurrentTemperature(): unsigned char
+}
+
+class DataStorageService {
+    + DataStorageService(url: string)
+    + sendBuzzerActivateTime()
+}
+note left: This class is responsible for \n sending the data with LoRaWAN
+
+class TimeService {
+
+    + TimeService()
+    + receiveUnixTimestamp(): time_point
+}
+
+class Clock {
+
+    - timeElapsedSince: duration
+
+    + Clock()
+    + getCurrentTimestamp(): time_point
+}
+
+class AlarmClock {
+    - nextAlarm: time_point
+
+    + AlarmClock()
+    + setNextAlarm(value: time_point)
+}
+
+Clock o-- TimeService
+AlarmClock o-- Clock
+AlarmClock o-- DataStorageService
+AlarmClock o-- BuzzerActuator
+AlarmClock o-- Pump
+AlarmClock o-- BuzzerSensor
+
+Pump o-- PumpActuator
+Pump o-- WaterLevelSensor
+
+@enduml
