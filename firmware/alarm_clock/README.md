@@ -1,1 +1,0 @@
-folder for the alarm_clock main board
