@@ -206,4 +206,6 @@ $RECYCLE.BIN/
 *.bkp
 *.dtmp
 
+# Exclude the .idea folder completely
+
 .idea
