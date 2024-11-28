@@ -1,0 +1,34 @@
+@startuml
+
+class PumpActuator {
+
+    + PumpActuator()
+    + startDispense()
+    + stopDispense()
+}
+
+class Pump {
+
+    + Pump()
+    + startDispense()
+    + stopDispense()
+}
+
+class WaterLevelSensor {
+    + WaterLevelSensor()
+    + getWaterLevel(): unsigned char
+}
+
+class WaterDispenser {
+
+    + WaterDispenser()
+    + startDispensing()
+    + stopDispensing()
+}
+
+WaterDispenser o-- Pump
+
+Pump o-- PumpActuator
+Pump o-- WaterLevelSensor
+
+@enduml

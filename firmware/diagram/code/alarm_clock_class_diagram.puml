@@ -1,0 +1,52 @@
+@startuml
+
+
+class TimeService {
+
+    + TimeService()
+    + receiveUnixTimestamp(): time_point
+}
+
+class Clock {
+
+    - timeElapsedSince: duration
+
+    + Clock()
+    + getCurrentTimestamp(): time_point
+}
+
+class AlarmClock {
+    - nextAlarm: time_point
+
+    + AlarmClock()
+    + setNextAlarm(value: time_point)
+}
+
+class BuzzerActuator {
+
+    - volume: unsigned char
+
+    + BuzzerActuator()
+    + enable()
+    + disable()
+}
+
+class Button {
+
+    + BuzzerSensor()
+    + isPressed(): boolean
+}
+
+class Screen {
+
+    + Screen()
+    + print()
+}
+
+Clock o-- TimeService
+AlarmClock o-- Clock
+AlarmClock o-- BuzzerActuator
+AlarmClock o-- Button
+AlarmClock o-- Screen
+
+@enduml
