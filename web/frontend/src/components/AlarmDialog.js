@@ -20,7 +20,7 @@ const AlarmDialog = ({ open, alarm, onClose, onSave }) => {
     time: "",
     label: "",
     repeat: "none",
-    snoozeTime: 5, // Default snooze time in minutes
+    snooze: false, // Default snooze state
     waterSprayLvl: 0, // Default water spray intensity
     led: false, // Default LED state
   });
@@ -29,7 +29,7 @@ const AlarmDialog = ({ open, alarm, onClose, onSave }) => {
     if (alarm) {
       setNewAlarm({
         ...alarm,
-        snoozeTime: alarm.snoozeTime || 5,
+        snooze: alarm.snooze || false,
         waterSprayLvl: alarm.waterSprayLvl || 0,
         led: alarm.led || false,
       });
@@ -42,6 +42,10 @@ const AlarmDialog = ({ open, alarm, onClose, onSave }) => {
 
   const handleToggleChange = (event) => {
     setNewAlarm((prev) => ({ ...prev, led: event.target.checked }));
+  };
+
+  const handleSnoozeChange = (event) => {
+    setNewAlarm((prev) => ({ ...prev, snooze: event.target.checked }));
   };
 
   const handleSave = () => {
@@ -84,19 +88,16 @@ const AlarmDialog = ({ open, alarm, onClose, onSave }) => {
             <MenuItem value="weekly">Weekly</MenuItem>
           </Select>
         </FormControl>
-        <FormControl fullWidth margin="dense">
-          <p>Snooze Duration (minutes):</p>
-          <Slider
-            value={newAlarm.snoozeTime}
-            onChange={handleSliderChange("snoozeTime")}
-            min={1}
-            max={30}
-            step={1}
-            marks
-            valueLabelDisplay="auto"
-            aria-label="Snooze Time"
-          />
-        </FormControl>
+        <FormControlLabel
+          label="Snooze"
+          control={
+            <Switch
+              checked={newAlarm.snooze}
+              onChange={handleSnoozeChange}
+              color="primary"
+            />
+          }
+        />
         <FormControl fullWidth margin="dense">
           <p>Water Spray Intensity (0-100):</p>
           <Slider

@@ -29,7 +29,7 @@ const WaterTank = () => {
     fetchWaterLevel();
 
     // Optional: Poll the API every 5 seconds
-    const interval = setInterval(fetchWaterLevel, 5000);
+    const interval = setInterval(fetchWaterLevel, 500000);
 
     // Cleanup interval on unmount
     return () => clearInterval(interval);

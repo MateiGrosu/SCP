@@ -13,7 +13,7 @@ const AlarmTable = () => {
   useEffect(() => {
     const fetchAlarms = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/alarms");
+        const response = await axios.get("http://localhost:5001/api/alarms");
         setAlarms(response.data);
       } catch (error) {
         console.error("Error fetching alarms:", error);
@@ -63,16 +63,18 @@ const AlarmTable = () => {
             <TableRow>
               <TableCell className="text-white font-bold">Time</TableCell>
               <TableCell className="text-white font-bold">Label</TableCell>
-              <TableCell className="text-white font-bold">Repeat</TableCell>
               <TableCell className="text-white font-bold">Snooze</TableCell>
               <TableCell className="text-white font-bold">Spray lvl</TableCell>
-              <TableCell className="text-white font-bold">Led</TableCell>
               <TableCell className="text-white font-bold"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {alarms.map((alarm) => (
-              <AlarmRow key={alarm.id} alarm={alarm} onEdit={handleEditClick} />
+              <AlarmRow 
+                key={alarm.id} 
+                alarm={alarm} 
+                onEdit={handleEditClick} 
+              />
             ))}
           </TableBody>
         </Table>
