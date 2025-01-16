@@ -19,7 +19,7 @@ const pool = new Pool({
 });
 
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: ['http://localhost:3000', 'https://frontend-alarm.onrender.com']
 }));
 app.use(express.json()); // Parse JSON request bodies
 
