@@ -32,39 +32,47 @@ app.post("/temperature", async (req, res) => {
   try {
     console.log("Received TTN Data:", JSON.stringify(req.body, null, 2));
 
-    const uplinkMessage = req.body.uplink_message;
-    if (!uplinkMessage) {
-      return res.status(400).json({ error: "Invalid payload: Missing uplink_message" });
+    // Ensure 'uplink_message' exists in payload
+    if (!req.body.uplink_message || !req.body.uplink_message.decoded_payload) {
+      console.error("Error: Missing uplink_message in request body");
+      return res.status(400).json({ error: "Invalid payload format: Missing uplink_message" });
     }
 
     // Extract sensor data
-    const payload = uplinkMessage.decoded_payload;
+    const payload = req.body.uplink_message.decoded_payload;
     const temperature = parseFloat(payload.temperature);
     const humidity = parseFloat(payload.humidity);
     const pressure = parseFloat(payload.pressure);
 
-    // Store sensor data in PostgreSQL
+    if (isNaN(temperature) || isNaN(humidity) || isNaN(pressure)) {
+      console.error("Error: Invalid sensor data received");
+      return res.status(400).json({ error: "Invalid sensor values" });
+    }
+
+    // Insert data into PostgreSQL
     const query = `
-      INSERT INTO sensor_data (temperature, humidity, pressure, received_at)
-      VALUES ($1, $2, $3, NOW()) RETURNING *;
-    `;
+        INSERT INTO sensor_data (temperature, humidity, pressure, received_at)
+        VALUES ($1, $2, $3, NOW()) RETURNING *;
+      `;
     const values = [temperature, humidity, pressure];
 
     const result = await pool.query(query, values);
     console.log("Data inserted:", result.rows[0]);
 
     res.status(200).json({ message: "Data received successfully" });
+
   } catch (error) {
     console.error("Error processing webhook:", error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message || "Internal server error" });
   }
 });
+
 
 // API to Fetch Latest Sensor Data
 app.get("/latest-data", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM sensor_data ORDER BY received_at DESC LIMIT 1");
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "No sensor data found" });
     }
