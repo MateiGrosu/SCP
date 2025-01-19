@@ -7,7 +7,7 @@ const WeatherInfo = () => {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/latest-data");
+        const response = await axios.get("https://backend-alarm.onrender.com/latest-data");
         setWeatherData(response.data);
       } catch (error) {
         console.error("Error fetching weather data:", error);

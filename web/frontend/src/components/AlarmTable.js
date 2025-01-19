@@ -13,7 +13,7 @@ const AlarmTable = () => {
   useEffect(() => {
     const fetchAlarms = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/alarms");
+        const response = await axios.get("https://backend-alarm.onrender.com/api/alarms");
         setAlarms(response.data);
       } catch (error) {
         console.error("Error fetching alarms:", error);

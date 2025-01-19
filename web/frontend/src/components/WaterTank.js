@@ -6,8 +6,8 @@ const WaterTank = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [isPumpOn, setIsPumpOn] = useState(false); // Track pump state
-  const apiUrl = "http://localhost:5001/watertank"; // API to fetch water level
-  const pumpApiUrl = "http://localhost:5001/send-command"; // API to control the pump
+  const apiUrl = "https://backend-alarm.onrender.com/watertank"; // API to fetch water level
+  const pumpApiUrl = "https://backend-alarm.onrender.com/send-command"; // API to control the pump
 
   useEffect(() => {
     const fetchWaterLevel = async () => {
