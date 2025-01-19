@@ -27,43 +27,46 @@ app.get("/", (req, res) => {
   res.send("Welcome to the backend server!");
 });
 
-//  API Endpoint to Receive TTN Webhook Data
 app.post("/temperature", async (req, res) => {
   try {
-    console.log("Received TTN Data:", JSON.stringify(req.body, null, 2));
+      console.log("📡 Received TTN Webhook Data:", JSON.stringify(req.body, null, 2));
 
-    // Ensure 'uplink_message' exists in payload
-    if (!req.body.uplink_message || !req.body.uplink_message.decoded_payload) {
-      console.error("Error: Missing uplink_message in request body");
-      return res.status(400).json({ error: "Invalid payload format: Missing uplink_message" });
-    }
+      // Check if uplink_message exists in request
+      if (!req.body.uplink_message || !req.body.uplink_message.decoded_payload) {
+          console.error("❌ ERROR: Missing 'uplink_message' in request body");
+          return res.status(400).json({ error: "Invalid payload format: Missing 'uplink_message'" });
+      }
 
-    // Extract sensor data
-    const payload = req.body.uplink_message.decoded_payload;
-    const temperature = parseFloat(payload.temperature);
-    const humidity = parseFloat(payload.humidity);
-    const pressure = parseFloat(payload.pressure);
+      // Extract sensor data from payload
+      const payload = req.body.uplink_message.decoded_payload;
+      const temperature = parseFloat(payload.temperature);
+      const humidity = parseFloat(payload.humidity);
+      const pressure = parseFloat(payload.pressure);
 
-    if (isNaN(temperature) || isNaN(humidity) || isNaN(pressure)) {
-      console.error("Error: Invalid sensor data received");
-      return res.status(400).json({ error: "Invalid sensor values" });
-    }
+      // Validate parsed data
+      if (isNaN(temperature) || isNaN(humidity) || isNaN(pressure)) {
+          console.error("❌ ERROR: Invalid sensor data received:", payload);
+          return res.status(400).json({ error: "Invalid sensor values" });
+      }
 
-    // Insert data into PostgreSQL
-    const query = `
+      // Log before inserting into the database
+      console.log(`📝 Inserting into DB → Temperature: ${temperature}, Humidity: ${humidity}, Pressure: ${pressure}`);
+
+      // Insert into PostgreSQL
+      const query = `
         INSERT INTO sensor_data (temperature, humidity, pressure, received_at)
         VALUES ($1, $2, $3, NOW()) RETURNING *;
       `;
-    const values = [temperature, humidity, pressure];
+      const values = [temperature, humidity, pressure];
 
-    const result = await pool.query(query, values);
-    console.log("Data inserted:", result.rows[0]);
+      const result = await pool.query(query, values);
+      console.log("✅ Data successfully inserted:", result.rows[0]);
 
-    res.status(200).json({ message: "Data received successfully" });
+      res.status(200).json({ message: "Data received successfully" });
 
   } catch (error) {
-    console.error("Error processing webhook:", error);
-    res.status(500).json({ error: error.message || "Internal server error" });
+      console.error("🔥 CRITICAL ERROR processing webhook:", error);
+      res.status(500).json({ error: error.message || "Internal server error" });
   }
 });
 
