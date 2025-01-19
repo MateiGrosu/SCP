@@ -210,3 +210,4 @@ $RECYCLE.BIN/
 
 .idea
 web/server/node_modules/.package-lock.json
+web/server/package-lock.json

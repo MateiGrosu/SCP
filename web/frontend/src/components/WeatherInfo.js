@@ -7,7 +7,7 @@ const WeatherInfo = () => {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/weather");
+        const response = await axios.get("http://localhost:5001/latest-data");
         setWeatherData(response.data);
       } catch (error) {
         console.error("Error fetching weather data:", error);
@@ -15,6 +15,9 @@ const WeatherInfo = () => {
     };
 
     fetchWeatherData();
+    const intervalId = setInterval(fetchWeatherData, 50000); // Fetch data every 50 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
 
   return (
