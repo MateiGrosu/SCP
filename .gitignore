@@ -209,3 +209,4 @@ $RECYCLE.BIN/
 # Exclude the .idea folder completely
 
 .idea
+web/server/node_modules/.package-lock.json
