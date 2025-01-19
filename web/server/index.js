@@ -23,13 +23,7 @@ const TTN_API_KEY = `Bearer ${process.env.TTN_API_KEY}`;
 
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || origin.includes("onrender.com") || origin.includes("localhost")) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS not allowed"));
-    }
-  }
+  origin: ['http://localhost:3000', 'https://frontend-alarm.onrender.com']
 }));
 
 app.use(express.json()); // Parse JSON request bodies
