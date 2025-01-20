@@ -8,6 +8,7 @@
 #include <button.h>
 #include <CircularBuffer.hpp>
 #include "display_time.h"
+#include "water_level.h"
 
 #include <iostream>
 #include <ArduinoLog.h>
@@ -26,6 +27,7 @@ Buzzer buzzer{};
 Sprinkler sprinkler{};
 AlarmClock timer_handler{ &buzzer, &sprinkler, &button };
 TimeDisplay time_display{};
+WaterLevelSensor water_level_sensor{};
 
 void waitForTimeConfigured();
 
@@ -53,6 +55,7 @@ void postSetup() {
     buzzer.setup();
     sprinkler.setup();
     time_display.setup();
+    water_level_sensor.setup();
 
     timer_handler.schedule_alarm(system_clock::now() += chrono::duration<int>(10));
 
