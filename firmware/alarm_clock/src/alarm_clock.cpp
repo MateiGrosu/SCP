@@ -20,6 +20,11 @@ bool AlarmClock::isAlarmSchedule() const
 
 void AlarmClock::schedule_alarm(const system_time_point alarm)
 {
+    if (this->m_alarm.has_value())
+    {
+        cancelAlarm();
+    }
+
     this->m_alarm = optional<Alarm>(alarm);
     Serial.print("Schedule alarm at ");
     print_chrono_time(alarm);
@@ -45,9 +50,10 @@ void AlarmClock::checkAlarm()
     }
 
     // check if we reached the alarm time
-    if (chrono::system_clock::now() <= this->m_alarm->alarm)
+    if (chrono::system_clock::now() >= this->m_alarm->alarm)
     {
         this->m_alarm->went_off = true;
+        this->m_alarm->stop_watch.start();
         Buzzer* buzzer = this->m_buzzer;
 
         Serial.println("Start beeping");

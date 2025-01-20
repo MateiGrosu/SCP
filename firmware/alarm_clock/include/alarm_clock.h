@@ -8,30 +8,16 @@
 #include "sprinkler.h"
 #include "button.h"
 #include "StopWatch.h"
+#include "timer_helper.h"
 
 #include "nonstd/optional.hpp"
 #include "buzzer.h"
-#include "statistics.h"
 
 using namespace std;
 using nonstd::optional;
 using nonstd::nullopt;
 
 using system_time_point = chrono::time_point<chrono::system_clock>;
-
-class FuncSpinTimerAction : public SpinTimerAction
-{
-private:
-    std::function<void()> callback;
-
-public:
-    explicit FuncSpinTimerAction(std::function<void()> callback) : callback(std::move(callback)){};
-
-    void timeExpired() override
-    {
-        callback();
-    }
-};
 
 class DisableAlarmStatEntry
 {
@@ -44,11 +30,11 @@ public:
     unsigned long time;
 };
 
-class AlarmClockStatistics
-{
-public:
-    Statistics<DisableAlarmStatEntry, 10> disable_alarm_stat_statistics;
-};
+// class AlarmClockStatistics
+// {
+// public:
+//     Statistics<DisableAlarmStatEntry, 10> disable_alarm_stat_statistics{};
+// };
 
 class Alarm
 {
@@ -59,6 +45,7 @@ public:
     {
         delete spin_timer;
         delete stop_timer;
+        delete sprinkler_timer;
     }
 
     system_time_point alarm;
@@ -80,15 +67,15 @@ public:
     // Defines how much time passes between each beep.
     // Alarm starts beeping when the alarm goes off.
     // Unit is in milliseconds.
-    unsigned long beep_interval{ sec_to_ms(1) };
+    unsigned long beep_interval{ 200 };
 
     // Defines after what time the alarm is stopped again, when not pressing the button.
     // Unit is in milliseconds.
-    unsigned long shutdown_alarm_after{ sec_to_ms(10) };
+    unsigned long shutdown_alarm_after{ sec_to_ms(60) };
 
     // Defines the time when the water starts spraying, when not pressing the button fast enough.
     // Unit is in milliseconds.
-    unsigned long spray_water_after{ sec_to_ms(5) };
+    unsigned long spray_water_after{ sec_to_ms(10) };
 };
 
 class AlarmClock
@@ -98,7 +85,6 @@ public:
 
 private:
     optional<Alarm> m_alarm{};
-    AlarmClockStatistics m_statistics{};
     Buzzer* m_buzzer;
     Sprinkler* m_sprinkler;
     Button* m_button;
@@ -115,7 +101,5 @@ public:
 
     void checkAlarm();
 };
-
-
 
 void print_chrono_time(system_time_point now);

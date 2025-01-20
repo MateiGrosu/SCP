@@ -10,7 +10,7 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // Button settings
-#define BUTTON_PIN 18 // GPIO pin for the button (change as needed)
+#define BUTTON_PIN 34 // GPIO pin for the button (change as needed)
 #define DEBOUNCE_DELAY 50 // Debounce time in milliseconds
 #define HOLD_DELAY 2000 // Time to hold "Pressed" state after release in milliseconds
 

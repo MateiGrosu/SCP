@@ -10,6 +10,8 @@ private:
     bool m_is_active{false};
 
 public:
+    void setup();
+
     void activate();
 
     void deactivate();

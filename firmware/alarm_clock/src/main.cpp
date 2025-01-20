@@ -29,6 +29,8 @@ void waitForTimeConfigured();
 
 void postSetup();
 
+void slow_loop();
+
 void wait_for_serial();
 
 void connect_to_wifi();
@@ -44,11 +46,25 @@ void setup() {
 
 // When this function is called, time has been synchronized
 void postSetup() {
+    Serial.println("Enter post setup");
+    button.setup();
+    buzzer.setup();
+    sprinkler.setup();
+
     timer_handler.schedule_alarm(system_clock::now() += chrono::duration<int>(10));
+
+    new SpinTimer(10, new FuncSpinTimerAction([]
+    {
+        slow_loop();
+    }), true , true);
+}
+
+void slow_loop()
+{
+    button.slow_loop();
 }
 
 void loop() {
-    button.loop();
     scheduleTimers();
     timer_handler.checkAlarm();
 }
@@ -76,7 +92,7 @@ void connect_to_wifi()
 {
     WiFi.setHostname("Smart Alarm Clock");
     WiFi.setAutoReconnect(true);
-    WiFi.begin("EricPcHotspot", "V|77o436");
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
     Serial.println("Waiting for WiFi connection...");
     // The alarm clock needs to current time, which it will receive from the internet.

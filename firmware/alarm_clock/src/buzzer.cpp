@@ -1,8 +1,16 @@
 #include "buzzer.h"
 
 #include <HardwareSerial.h>
+#include <Arduino.h>
 
-#include "alarm_clock.h"
+static constexpr uint8_t BUZZER_PIN{ 17 };
+
+void Buzzer::setup()
+{
+    // Initialize the buzzer pin as output
+    pinMode(BUZZER_PIN, OUTPUT);
+    turn_buzzer_off();
+}
 
 void Buzzer::activate()
 {
@@ -18,14 +26,14 @@ void Buzzer::deactivate()
 
 void turn_buzzer_on()
 {
-    // TODO Add here the hardware code to turn the buzzer on
-    Serial.println("Buzzer is turned on");
+    digitalWrite(BUZZER_PIN, HIGH);
+    //Serial.println("Buzzer is turned on");
 }
 
 void turn_buzzer_off()
 {
-    // TODO Add here the hardware code to turn the buzzer off
-    Serial.println("Buzzer is turned off");
+    digitalWrite(BUZZER_PIN, LOW);
+    //Serial.println("Buzzer is turned off");
 }
 
 

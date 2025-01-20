@@ -7,6 +7,8 @@ public:
 
     ~Sprinkler();
 
+    void setup();
+
     void activate();
 
     void deactivate();
