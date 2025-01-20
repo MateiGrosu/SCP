@@ -1,0 +1,48 @@
+@startuml
+
+class Alarm {
+  + spin_timer: SpinTimer*
+  + stop_timer: SpinTimer*
+  + sprinkler_timer: SpinTimer*
+  + stop_watch: StopWatch*
+  + went_off: bool
+}
+
+class AlarmConfig {
+  + beep_interval: unsigned long
+  + shutdown_alarm_after: unsigned long
+  + spray_water_after: unsigned long
+}
+
+class AlarmClock {
+  + is_alarm_scheduled(): bool
+  + schedule_alarm(system_time_point alarm)
+  + cancelAlram()
+  + checkAlarm():
+}
+
+class Buzzer {
+  + setup()
+  + activate()
+  + deactivate()
+}
+class Sprinkler {
+  + setup()
+  + activate()
+  + deactivate()
+}
+
+class Button {
+  + set_on_pressed(callback: std::function<void()>)
+  + setup()
+  + slow_loop()
+}
+
+AlarmClock o-- Buzzer : m_buzzer
+AlarmClock o-- Sprinkler : m_sprinkler
+AlarmClock o-- Button : m_button
+AlarmClock o-- AlarmConfig : m_alarm_config
+AlarmClock *-- "0..1" Alarm : m_alarm
+
+
+@enduml
