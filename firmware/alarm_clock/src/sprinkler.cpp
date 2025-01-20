@@ -3,7 +3,7 @@
 #include <HardwareSerial.h>
 #include <Arduino.h>
 
-static constexpr uint8_t SPRINKLER_PIN = 27;
+static constexpr uint8_t SPRINKLER_PIN = 12;
 
 static void activate_sprinkler()
 {

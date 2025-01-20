@@ -67,15 +67,15 @@ public:
     // Defines how much time passes between each beep.
     // Alarm starts beeping when the alarm goes off.
     // Unit is in milliseconds.
-    unsigned long beep_interval{ 200 };
+    unsigned long beep_interval{ 333 };
 
     // Defines after what time the alarm is stopped again, when not pressing the button.
     // Unit is in milliseconds.
-    unsigned long shutdown_alarm_after{ sec_to_ms(60) };
+    unsigned long shutdown_alarm_after{ sec_to_ms(300) };
 
     // Defines the time when the water starts spraying, when not pressing the button fast enough.
     // Unit is in milliseconds.
-    unsigned long spray_water_after{ sec_to_ms(10) };
+    unsigned long spray_water_after{ sec_to_ms(5) };
 };
 
 class AlarmClock
