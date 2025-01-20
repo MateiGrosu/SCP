@@ -26,6 +26,7 @@ const WeatherInfo = () => {
       <p>Temperature: {weatherData.temperature} °C</p>
       <p>Humidity: {weatherData.humidity} %</p>
       <p>Pressure: {weatherData.pressure} hPa</p>
+      <p>Time: {weatherData.received_at} hPa</p>
     </div>
   );
 };
