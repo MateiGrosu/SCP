@@ -47,9 +47,9 @@ void my_loop()
     String waterLevel;
     if (sensorValue < 1200) {
         waterLevel = "Empty";
-    } else if (sensorValue < 2500) {
+    } else if (sensorValue < 1600) {
         waterLevel = "Low";
-    } else if (sensorValue < 2800) {
+    } else if (sensorValue < 1900) {
         waterLevel = "Medium";
     } else {
         waterLevel = "High";
@@ -58,7 +58,7 @@ void my_loop()
     // Move the cursor to the next line and display the water level status
     display.setCursor(0, 30);  // Move cursor to the next line (Y = 30)
     display.print("Water Level: ");
-    display.println(waterLevel);
+    display.print(waterLevel);
 
     display.display();  // Update the OLED screen
 }

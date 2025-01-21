@@ -30,7 +30,7 @@ AlarmClock timer_handler{ &buzzer, &sprinkler, &button };
 TimeDisplay time_display{};
 WaterLevelSensor water_level_sensor{};
 Temperature temperature{};
-LoRaWAN lorawan{};
+// LoraWAN lorawan{};
 
 void waitForTimeConfigured();
 void postSetup();
@@ -42,8 +42,8 @@ void configure_current_time();
 void setup() {
     wait_for_serial();
     postSetup();
-    // connect_to_wifi();
-    // configure_current_time();
+    connect_to_wifi();
+    configure_current_time();
 }
 
 // When this function is called, time has been synchronized
@@ -60,7 +60,7 @@ void postSetup() {
         Serial.println("Error: Temperature sensor failed to initialize!");
     }
 
-    lorawan.initialize(); // Initialize LoRaWAN module
+    // lorawan.setup(); // Initialize LoRaWAN module
 
     timer_handler.schedule_alarm(system_clock::now() + chrono::duration<int>(10));
 
@@ -72,23 +72,11 @@ void postSetup() {
 
 void slow_loop() {
     button.slow_loop();
-
-    float temp, humidity, pressure;
-
-    // Read sensor data before sending
-    if (temperature.readSensorData(temp, humidity, pressure)) {
-        Serial.printf("Sending Data - Temp: %.2f, Humidity: %.2f, Pressure: %.2f\n", temp, humidity, pressure);
-        lorawan.sendMessage(temp, humidity, pressure); // Send via LoRaWAN
-    } else {
-        Serial.println("Error: Failed to read temperature sensor data!");
-    }
 }
 
 void loop() {
     scheduleTimers();
     timer_handler.checkAlarm();
-
-    lorawan.runLoop();  // Keep LoRaWAN event processing active
 }
 
 void waitForTimeConfigured() {
